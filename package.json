@@ -1,0 +1,12 @@
+{
+    "name": "vam",
+    "private": true,
+    "scripts": {
+        "dev": "concurrently -n server, client -c blue,green \"pnpm dev:server\" \"pnpm dev:client\"",
+        "dev:server": "uv run --directory server python manage.py runserver",
+        "dev:client": "pnpm --filter client dev"
+    },
+    "devDependencies": {
+        "concurrently": "^10.0.6"
+    }
+}

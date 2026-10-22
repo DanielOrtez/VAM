@@ -1,0 +1,19 @@
+[tool.uv.workspace]
+members = ["server"]
+
+[tool.mypy]
+python_version = "3.14"
+mypy_path = "server"
+explicit_package_bases = true
+plugins = ["mypy_django_plugin.main"]
+exclude = ["**/migrations/**"]
+
+[tool.django-stubs]
+django_settings_module = "config.settings.dev"
+
+[tool.ruff]
+src = ["server"]
+extend-exclude = ["**/migrations/**"]
+
+[tool.ruff.lint]
+fixable = ["ALL"]
