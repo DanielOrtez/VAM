@@ -5,6 +5,7 @@ db.sqlite3
 .ruff_cache/
 .mypy_cache/
 .pytest_cache/
+.django-stub-gen/
 
 node_modules/
 dist/

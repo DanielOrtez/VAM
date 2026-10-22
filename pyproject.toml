@@ -6,7 +6,8 @@ python_version = "3.14"
 mypy_path = "server"
 explicit_package_bases = true
 plugins = ["mypy_django_plugin.main"]
-exclude = ["**/migrations/**"]
+exclude = ["/migrations/"]
+ignore_missing_imports = true
 
 [tool.django-stubs]
 django_settings_module = "config.settings.dev"
