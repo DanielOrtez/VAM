@@ -1,11 +1,12 @@
-<script setup lang="ts"></script>
-
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div class="relative flex min-h-full flex-col overflow-hidden bg-ink-950">
+    <header class="bg-zinc-900">
+      <RouterLink to="/">Header</RouterLink>
+    </header>
+    <main class="relative flex flex-1 items-center justify-center px-4 py-10 sm:py-16">
+      <RouterView />
+    </main>
+  </div>
 </template>
 
 <style scoped></style>
