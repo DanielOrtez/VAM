@@ -13,4 +13,5 @@ dependencies = [
 dev = [
     "django-stubs[compatible-mypy]>=6.1.2",
     "mypy>=2.4.0",
+    "ruff>=0.17.2",
 ]
