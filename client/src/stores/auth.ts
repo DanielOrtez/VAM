@@ -14,23 +14,31 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isLoading = ref(false)
 
-  async function initialize() {
-    try {
-      if (getCsrfToken() === null) {
-        await http.GET(URLs.config)
-      }
+  let initPromise: Promise<void> | null = null
 
-      const { ok, data, status } = await http.GET<SessionResponse>(URLs.session)
-      if (!ok || !data) {
-        throw new Error(`Session: ${status}`)
-      }
+  async function initialize(): Promise<void> {
+    if (initPromise) return initPromise
 
-      user.value = data.data.user
-      isAuthenticated.value = data.meta.is_authenticated
-    } catch {
-      user.value = null
-      isAuthenticated.value = false
-    }
+    initPromise = (async () => {
+      try {
+        if (!getCsrfToken()) {
+          await http.GET(URLs.config)
+        }
+
+        const { ok, data, status } = await http.GET<SessionResponse>(URLs.session)
+        if (!ok || !data) {
+          throw new Error(`Session: ${status}`)
+        }
+
+        user.value = data.data.user
+        isAuthenticated.value = data.meta.is_authenticated
+      } catch {
+        user.value = null
+        isAuthenticated.value = false
+      }
+    })()
+
+    return initPromise
   }
 
   async function authenticate(userData: UserLogin) {
