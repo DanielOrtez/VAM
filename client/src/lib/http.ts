@@ -1,7 +1,8 @@
 import {settings} from '@/lib/allauth'
 import {getCsrfToken} from '@/lib/cookie'
+import type {SessionResponse} from "@/types/auth.ts";
 
-export default function useHttp() {
+function useHttp() {
   type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
   interface HttpResponse<T> {
@@ -9,6 +10,9 @@ export default function useHttp() {
     ok: boolean
     data: T
   }
+
+  let onAuthChange: (value: SessionResponse) => void = () => {}
+  const setOnAuthChangeHandler = (fn: (value: SessionResponse) => void) => (onAuthChange = fn)
 
   async function request<T>(
     method: HttpMethod,
@@ -26,7 +30,12 @@ export default function useHttp() {
     }
 
     const response = await fetch(`${settings?.baseUrl}${url}`, options)
+
     const data = await response.json().catch(() => null)
+
+    if ([401, 410].includes(response.status)) {
+      onAuthChange(data)
+    }
 
     return { status: response.status, ok: response.ok, data: data as T }
   }
@@ -47,5 +56,8 @@ export default function useHttp() {
     GET,
     POST,
     DELETE,
+    setOnAuthChangeHandler,
   }
 }
+
+export const http = useHttp()

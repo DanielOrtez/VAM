@@ -1,8 +1,12 @@
-import { useAuthStore } from '@/stores/auth'
-import { createRouter, createWebHistory } from 'vue-router'
+import {useAuthStore} from '@/stores/auth'
+import {createRouter, createWebHistory, type Router} from 'vue-router'
 
 const routes = [
-  { path: '/', component: () => import('@/pages/Home.vue') },
+  {
+    path: '/',
+    component: () => import('@/pages/Home.vue'),
+    meta: { auth: true },
+  },
   {
     path: '/account',
     children: [
@@ -10,13 +14,13 @@ const routes = [
         path: 'login',
         name: 'login',
         component: () => import('@/pages/auth/LoginPage.vue'),
-        meta: { requiresGuest: true },
+        meta: { auth: false },
       },
       {
         path: 'signup',
         name: 'signup',
         component: () => import('@/pages/auth/RegisterPage.vue'),
-        meta: { requiresGuest: true },
+        meta: { auth: false },
       },
     ],
   },
@@ -27,27 +31,20 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach(async (to) => {
-  const authStore = useAuthStore()
-
-  await authStore.initialize()
-
-  const isAuthenticated = authStore.isAuthenticated
-  const requiresGuest = to.matched.some((record) => record.meta.requiresGuest)
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
-
-  if (requiresAuth && !isAuthenticated) {
-    return {
-      name: 'login',
-      query: { redirect: to.fullPath },
-    }
-  }
-
-  if (requiresGuest && isAuthenticated) {
-    return '/'
-  }
-
-  return
-})
-
 export default router
+
+export function setupRouterGuards(router: Router, store: ReturnType<typeof useAuthStore>) {
+  router.beforeEach((to) => {
+    const isAuthenticated = store.isAuthenticated
+    const requiresAuth = to.matched.some((record) => record.meta.auth)
+
+    if (requiresAuth && !isAuthenticated) {
+      return {
+        name: 'login',
+        query: { redirect: to.fullPath },
+      }
+    } else if (!requiresAuth && isAuthenticated) return '/'
+
+    return
+  })
+}

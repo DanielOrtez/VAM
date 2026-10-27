@@ -1,44 +1,35 @@
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 import {defineStore} from 'pinia'
 
 import {URLs} from '@/lib/allauth'
-import type {SessionResponse, UserLogin, UserSession} from '@/types/auth'
+import type {SessionResponse, UserLogin} from '@/types/auth'
 import {getCsrfToken} from '@/lib/cookie'
-import useHttp from '@/lib/http.ts'
+import {http} from '@/lib/http.ts'
 
 export const useAuthStore = defineStore('auth', () => {
-  const http = useHttp()
+  const session = ref<SessionResponse | null>(null)
 
-  const user = ref<UserSession | null>(null)
-  const isAuthenticated = ref(false)
-
+  const user = computed(() => session.value?.data.user)
+  const isAuthenticated = computed(() => session.value?.meta.is_authenticated)
   const isLoading = ref(false)
 
-  let initPromise: Promise<void> | null = null
-
   async function initialize(): Promise<void> {
-    if (initPromise) return initPromise
+    http.setOnAuthChangeHandler((value) => (session.value = value))
 
-    initPromise = (async () => {
-      try {
-        if (!getCsrfToken()) {
-          await http.GET(URLs.config)
-        }
-
-        const { ok, data, status } = await http.GET<SessionResponse>(URLs.session)
-        if (!ok || !data) {
-          throw new Error(`Session: ${status}`)
-        }
-
-        user.value = data.data.user
-        isAuthenticated.value = data.meta.is_authenticated
-      } catch {
-        user.value = null
-        isAuthenticated.value = false
+    try {
+      if (!getCsrfToken()) {
+        await http.GET(URLs.config)
       }
-    })()
 
-    return initPromise
+      const { ok, data, status } = await http.GET<SessionResponse>(URLs.session)
+      if (!ok || !data) {
+        throw new Error(`Session: ${status}`)
+      }
+
+      session.value = data
+    } catch {
+      session.value = null
+    }
   }
 
   async function authenticate(userData: UserLogin) {
@@ -48,15 +39,13 @@ export const useAuthStore = defineStore('auth', () => {
       password: userData.password,
     })
 
-    user.value = data.data.user
-    isAuthenticated.value = data.meta.is_authenticated
+    session.value = data
     isLoading.value = false
   }
 
   async function logout() {
     await http.DELETE(URLs.session)
-    user.value = null
-    isAuthenticated.value = false
+    session.value = null
   }
 
   return { user, isAuthenticated, isLoading, authenticate, initialize, logout }
