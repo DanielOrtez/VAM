@@ -4,7 +4,7 @@ import {defineStore} from 'pinia'
 import {URLs} from '@/lib/allauth'
 import type {SessionResponse, UserLogin} from '@/types/auth'
 import {getCsrfToken} from '@/lib/cookie'
-import {http} from '@/lib/http.ts'
+import {http, setOnAuthChangeHandler} from '@/lib/http.ts'
 
 export const useAuthStore = defineStore('auth', () => {
   const session = ref<SessionResponse | null>(null)
@@ -14,14 +14,14 @@ export const useAuthStore = defineStore('auth', () => {
   const isLoading = ref(false)
 
   async function initialize(): Promise<void> {
-    http.setOnAuthChangeHandler((value) => (session.value = value))
+    setOnAuthChangeHandler((value) => (session.value = value))
 
     try {
       if (!getCsrfToken()) {
         await http.GET(URLs.config)
       }
 
-      const { ok, data, status } = await http.GET<SessionResponse>(URLs.session)
+      const {ok, data, status} = await http.GET<SessionResponse>(URLs.session)
       if (!ok || !data) {
         throw new Error(`Session: ${status}`)
       }
@@ -34,8 +34,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function authenticate(userData: UserLogin) {
     isLoading.value = true
-    const { data } = await http.POST<SessionResponse>(URLs.login, {
-      username: userData.username,
+    const {data} = await http.POST<SessionResponse>(URLs.login, {
+      email: userData.email,
       password: userData.password,
     })
 
@@ -48,5 +48,5 @@ export const useAuthStore = defineStore('auth', () => {
     session.value = null
   }
 
-  return { user, isAuthenticated, isLoading, authenticate, initialize, logout }
+  return {user, isAuthenticated, isLoading, authenticate, initialize, logout}
 })

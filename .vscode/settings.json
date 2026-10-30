@@ -8,7 +8,10 @@
     }
   },
   "[javascript][typescript]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.oxc": "explicit"
+    }
   },
   "js/ts.tsdk.path": "client/node_modules/typescript/lib",
   "js/ts.tsdk.promptToUseWorkspaceVersion": true

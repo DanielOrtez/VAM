@@ -1,6 +1,9 @@
 import {settings} from '@/lib/allauth'
 import {getCsrfToken} from '@/lib/cookie'
-import type {SessionResponse} from "@/types/auth.ts";
+import type {SessionResponse} from '@/types/auth.ts'
+
+let onAuthChange: (value: SessionResponse) => void = () => {}
+export const setOnAuthChangeHandler = (fn: (value: SessionResponse) => void) => (onAuthChange = fn)
 
 function useHttp() {
   type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
@@ -11,22 +14,22 @@ function useHttp() {
     data: T
   }
 
-  let onAuthChange: (value: SessionResponse) => void = () => {}
-  const setOnAuthChangeHandler = (fn: (value: SessionResponse) => void) => (onAuthChange = fn)
-
   async function request<T>(
     method: HttpMethod,
     url: string,
     payload?: unknown,
   ): Promise<HttpResponse<T>> {
+    const headers: Record<string, string> = {
+      Accept: 'application/json',
+    }
+    if (payload !== undefined) headers['Content-Type'] = 'application/json'
+    if (method !== 'GET') headers['X-CSRFToken'] = getCsrfToken() ?? ''
+
     const options: RequestInit = {
       method,
+      headers,
       credentials: 'include',
       body: payload ? JSON.stringify(payload) : undefined,
-      headers: {
-        'X-CSRFToken': getCsrfToken() ?? '',
-        'Content-Type': 'application/json',
-      },
     }
 
     const response = await fetch(`${settings?.baseUrl}${url}`, options)
@@ -56,7 +59,6 @@ function useHttp() {
     GET,
     POST,
     DELETE,
-    setOnAuthChangeHandler,
   }
 }
 

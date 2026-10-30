@@ -13,7 +13,7 @@ const router = useRouter()
 const route = useRoute()
 
 const values = reactive({
-  username: '',
+  email: '',
   password: '',
 })
 
@@ -34,8 +34,8 @@ async function handleLogin() {
   >
     <form class="flex flex-col gap-5 w-sm" @submit.prevent="handleLogin">
       <div class="flex flex-col gap-2">
-        <label for="username">Username</label>
-        <InputText type="text" id="username" placeholder="Username" v-model="values.username" />
+        <label for="email">Email</label>
+        <InputText type="text" id="email" placeholder="Email" v-model="values.email" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-end justify-between">
