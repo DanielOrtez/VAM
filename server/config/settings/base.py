@@ -129,3 +129,5 @@ STATIC_URL = "static/"
 # allauth settings
 
 HEADLESS_ONLY = True
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*"]
