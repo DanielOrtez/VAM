@@ -32,6 +32,9 @@ importers:
 
   client:
     dependencies:
+      '@openvue/forms':
+        specifier: ^1.1.0
+        version: 1.1.0(vue@3.5.44(typescript@6.0.3))
       '@openvue/themes':
         specifier: ^1.0.0
         version: 1.0.0
@@ -56,6 +59,9 @@ importers:
       vue-router:
         specifier: ^5.3.1
         version: 5.4.0(@voidzero-dev/vite-plus-core@1.3.0(@types/node@24.19.2)(@volar/typescript@2.4.28(typescript@6.0.3))(@vue/language-core@3.3.13)(jiti@2.7.0)(typescript@6.0.3)(vue-tsc@3.3.13(typescript@6.0.3)))(@vue/compiler-sfc@3.5.44)(pinia@4.1.0(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.44(typescript@6.0.3)))(vue@3.5.44(typescript@6.0.3))
+      zod:
+        specifier: ^4.6.7
+        version: 4.6.7
     devDependencies:
       '@pinia/testing':
         specifier: ^2.0.2
@@ -419,6 +425,10 @@ packages:
   '@one-ini/wasm@0.2.1':
     resolution: {integrity: sha512-TUqERXGNTifZ9y2g3wPxQrw3HpHv/02DsW3D90T9x0hhonrL1ZqpSmNrU2XkoIq0fP1N6gZfVQzy2Fw1ZvGBNg==}
 
+  '@openuxkit/forms@1.0.0':
+    resolution: {integrity: sha512-0HgeZvIFX2yah16dc4KXoBlPZdMbK75MMOPFx7DGo6fG/R1Ds0ohNW08E1Kynlfiu+LMAxZ1KAS2e0JwmsF5ZQ==}
+    engines: {node: '>=12.11.0'}
+
   '@openuxkit/styled@1.0.0':
     resolution: {integrity: sha512-tXPv00g3qlhZJkDMMK2vxYFQldO5T6Y5HRISU+dfJ3/I1bV8JNx93N1aJb2SQN1xlrO/2UhsISDFYPTVMwXUFQ==}
     engines: {node: '>=12.11.0'}
@@ -438,6 +448,16 @@ packages:
     engines: {node: '>=12.11.0'}
     peerDependencies:
       vue: ^3.5.0
+
+  '@openvue/core@1.1.0':
+    resolution: {integrity: sha512-jJVcg9WwAa0meu+O1MBZkCIhdxA2ddxby+pBWMzCzmbG8I6bSeWXZ/Mi1/WzXJYA8slUI0XTXNUD3ID/58XB+g==}
+    engines: {node: '>=12.11.0'}
+    peerDependencies:
+      vue: ^3.5.0
+
+  '@openvue/forms@1.1.0':
+    resolution: {integrity: sha512-6rpOPiKBsTiQCq6cmXF++SwEEkIL9DzsTxg2KGtrlFihNQTMLuED4yhDkMfqGzXqSSjXMZmpmHDdY0aSrle2rA==}
+    engines: {node: '>=12.11.0'}
 
   '@openvue/icons@1.0.0':
     resolution: {integrity: sha512-xCBcHvs0SjEqrDkL54cwcSKUYkjbAPPbfISfygoxjkE/yibUGk3STyutVsGTAEeV5BIYmK/Hd4eUMN/FOTcsfw==}
@@ -2795,6 +2815,9 @@ packages:
     resolution: {integrity: sha512-XrBh9ZiQK5mJVRxZBAvD6LwRyAYrK3MFtH3+onyuxFL5hFD44EC3QOmIC1FjTj6H2MMwq46/NAI+NZxLZPZgxg==}
     engines: {node: '>=14.18.0'}
 
+  zod@4.6.7:
+    resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
+
 snapshots:
 
   '@asamuzakjp/css-color@7.1.7':
@@ -3137,6 +3160,10 @@ snapshots:
 
   '@one-ini/wasm@0.2.1': {}
 
+  '@openuxkit/forms@1.0.0':
+    dependencies:
+      '@openuxkit/utils': 1.0.1
+
   '@openuxkit/styled@1.0.0':
     dependencies:
       '@openuxkit/utils': 1.0.1
@@ -3157,6 +3184,21 @@ snapshots:
       '@openuxkit/styles': 1.1.0
       '@openuxkit/utils': 1.0.1
       vue: 3.5.44(typescript@6.0.3)
+
+  '@openvue/core@1.1.0(vue@3.5.44(typescript@6.0.3))':
+    dependencies:
+      '@openuxkit/styled': 1.0.0
+      '@openuxkit/styles': 1.1.0
+      '@openuxkit/utils': 1.0.1
+      vue: 3.5.44(typescript@6.0.3)
+
+  '@openvue/forms@1.1.0(vue@3.5.44(typescript@6.0.3))':
+    dependencies:
+      '@openuxkit/forms': 1.0.0
+      '@openuxkit/utils': 1.0.1
+      '@openvue/core': 1.1.0(vue@3.5.44(typescript@6.0.3))
+    transitivePeerDependencies:
+      - vue
 
   '@openvue/icons@1.0.0(vue@3.5.44(typescript@6.0.3))':
     dependencies:
@@ -5204,3 +5246,5 @@ snapshots:
     dependencies:
       '@yuku-toolchain/types': 0.19.0
       yuku-core: 0.19.0
+
+  zod@4.6.7: {}
