@@ -1,6 +1,6 @@
-import {settings} from '@/lib/allauth'
-import {getCsrfToken} from '@/lib/cookie'
-import type {SessionResponse} from '@/types/auth.ts'
+import { settings } from '@/lib/allauth'
+import { getCsrfToken } from '@/lib/cookie'
+import type { SessionResponse } from '@/types/auth.ts'
 
 let onAuthChange: (value: SessionResponse) => void = () => {}
 export const setOnAuthChangeHandler = (fn: (value: SessionResponse) => void) => (onAuthChange = fn)

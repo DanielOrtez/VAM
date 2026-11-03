@@ -1,5 +1,7 @@
 import {beforeEach, describe, expect, it, vi} from 'vite-plus/test'
+// @ts-expect-error @ ->
 import {http, setOnAuthChangeHandler} from '@/lib/http.ts'
+// @ts-expect-error @ ->
 import {URLs} from '@/lib/allauth.ts'
 
 const mockFetch = (status: number, body: unknown) => {
@@ -7,7 +9,7 @@ const mockFetch = (status: number, body: unknown) => {
 }
 
 describe('http client', () => {
-  const handler = vi.fn()
+  const handler = vi.fn<(value: unknown) => void>()
   beforeEach(() => {
     handler.mockClear()
     setOnAuthChangeHandler(handler)

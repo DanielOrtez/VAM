@@ -1,9 +1,9 @@
-import {describe, expect, it, vi} from 'vite-plus/test'
+import { describe, expect, it, vi } from 'vite-plus/test'
 
-import {mount} from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import App from '../App.vue'
-import {createTestingPinia} from '@pinia/testing'
-import router from "@/router";
+import { createTestingPinia } from '@pinia/testing'
+import router from '@/router'
 
 describe('App', () => {
   it('mounts renders properly', () => {

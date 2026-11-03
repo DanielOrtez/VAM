@@ -2,10 +2,10 @@
 import { Message } from 'openvue'
 
 defineProps<{
-    message: string
+  message: string
 }>()
 </script>
 
 <template>
-    <Message severity="error" size="small" variant="simple">{{ message }}</Message>
+  <Message severity="error" size="small" variant="simple">{{ message }}</Message>
 </template>

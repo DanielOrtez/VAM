@@ -11,7 +11,7 @@ import FormError from '@/components/FormError.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 
 import { useAuthStore } from '@/stores/auth'
-import { getSafeRedirectPath } from "@/utils/router.ts"
+import { getSafeRedirectPath } from '@/utils/router.ts'
 
 const store = useAuthStore()
 const router = useRouter()
@@ -28,7 +28,7 @@ const resolver = zodResolver(
   z.object({
     email: z.email('Enter a valid email address.'),
     password: z.string().min(1, 'Password is required.'),
-  })
+  }),
 )
 
 async function handleLogin({ valid }: { valid: boolean }) {
@@ -38,19 +38,41 @@ async function handleLogin({ valid }: { valid: boolean }) {
     await store.authenticate(values)
     router.push(getSafeRedirectPath(route.query.redirect))
   } catch (error) {
-    toast.add({ severity: 'error', summary: 'Error authenticating', detail: 'Please try again.', life: 2000 })
+    toast.add({
+      severity: 'error',
+      summary: 'Error authenticating',
+      detail: 'Please try again.',
+      life: 2000,
+    })
   }
 }
 </script>
 
 <template>
-  <AuthContainer title="Log in to your account" description="Enter your credentials to access your account.">
-    <Form class="flex flex-col gap-5 w-sm" :resolver @submit="handleLogin" v-slot="$form" :initialValues="values"
-      :validateOnSubmit="true" :validateOnValueUpdate="false" :validateOnBlur="true">
+  <AuthContainer
+    title="Log in to your account"
+    description="Enter your credentials to access your account."
+  >
+    <Form
+      class="flex flex-col gap-5 w-sm"
+      :resolver
+      @submit="handleLogin"
+      v-slot="$form"
+      :initialValues="values"
+      :validateOnSubmit="true"
+      :validateOnValueUpdate="false"
+      :validateOnBlur="true"
+    >
       <div class="flex flex-col gap-2">
         <label for="email">Email</label>
-        <InputText type="text" name="email" id="email" placeholder="Email" v-model="values.email"
-          :invalid="!!store.errors?.length" />
+        <InputText
+          type="text"
+          name="email"
+          id="email"
+          placeholder="Email"
+          v-model="values.email"
+          :invalid="!!store.errors?.length"
+        />
         <ErrorMessage v-if="$form.email?.invalid" :message="$form.email.error.message" />
         <FormError :errors="store.errors" param="email" />
       </div>
@@ -59,8 +81,16 @@ async function handleLogin({ valid }: { valid: boolean }) {
           <label for="password">Password</label>
           <a href="#" class="text-sm underline text-primary">Forgot your password?</a>
         </div>
-        <Password name="password" id="password" placeholder="Password" :feedback="false" toggleMask fluid
-          v-model="values.password" :invalid="!!store.errors?.length" />
+        <Password
+          name="password"
+          id="password"
+          placeholder="Password"
+          :feedback="false"
+          toggleMask
+          fluid
+          v-model="values.password"
+          :invalid="!!store.errors?.length"
+        />
         <ErrorMessage v-if="$form.password?.invalid" :message="$form.password.error.message" />
         <FormError :errors="store.errors" param="password" />
       </div>
