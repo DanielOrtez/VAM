@@ -1,5 +1,7 @@
 from .base import *
 
+DEBUG = False
+
 DATABASES["default"]["OPTIONS"]["pool"] = {
     "min_size": 2,
     "max_size": 10,
