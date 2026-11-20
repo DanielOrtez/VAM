@@ -11,5 +11,6 @@ export const settings: { client: string; baseUrl: string } = {
 export const URLs = {
   config: '/config',
   login: '/auth/login',
+  signup: '/auth/signup',
   session: '/auth/session',
 } as const

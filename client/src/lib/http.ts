@@ -40,6 +40,10 @@ function useHttp() {
       onAuthChange(data)
     }
 
+    if (!response.ok) {
+      throw new Error(`HTTP request failed: ${response.status} ${response.statusText}`)
+    }
+
     return { status: response.status, ok: response.ok, data: data as T }
   }
 

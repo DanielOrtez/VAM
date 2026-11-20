@@ -2,7 +2,7 @@ import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
 import { URLs } from '@/lib/allauth'
-import type { SessionResponse, UserLogin } from '@/types/auth'
+import type { SessionResponse, UserLogin, UserSignup } from '@/types/auth'
 import { getCsrfToken } from '@/lib/cookie'
 import { http, setOnAuthChangeHandler } from '@/lib/http.ts'
 
@@ -36,17 +36,24 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function authenticate(userData: UserLogin) {
     isLoading.value = true
-    const { status, data } = await http.POST<SessionResponse>(URLs.login, {
+    const { data } = await http.POST<SessionResponse>(URLs.login, {
       email: userData.email,
       password: userData.password,
     })
 
     isLoading.value = false
     session.value = data
+  }
 
-    if (status !== 200) {
-      throw new Error(`Authentication failed: ${status}`)
-    }
+  async function signup(userData: UserSignup) {
+    isLoading.value = true
+    const { data } = await http.POST<SessionResponse>(URLs.signup, {
+      email: userData.email,
+      password: userData.password,
+    })
+
+    isLoading.value = false
+    session.value = data
   }
 
   async function logout() {
@@ -54,5 +61,5 @@ export const useAuthStore = defineStore('auth', () => {
     session.value = null
   }
 
-  return { user, errors, isAuthenticated, isLoading, authenticate, initialize, logout }
+  return { user, errors, isAuthenticated, isLoading, authenticate, initialize, signup, logout }
 })

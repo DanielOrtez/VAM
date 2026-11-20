@@ -5,6 +5,11 @@ export type UserLogin = {
   password: string
 }
 
+export type UserSignup = {
+  email: string
+  password: string
+}
+
 export type UserSession = {
   id: number
   display: string

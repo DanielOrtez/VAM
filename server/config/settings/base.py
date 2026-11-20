@@ -129,5 +129,10 @@ STATIC_URL = "static/"
 # allauth settings
 
 HEADLESS_ONLY = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_LOGIN_METHODS = {"email"}
-ACCOUNT_SIGNUP_FIELDS = ["email*"]
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]
+
+HEADLESS_FRONTEND_URLS = {
+    "account_confirm_email": "/account/verify-email/{key}",
+}

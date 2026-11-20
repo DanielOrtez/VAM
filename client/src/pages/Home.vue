@@ -11,6 +11,6 @@ const store = useAuthStore()
     <RouterLink :to="{ name: 'signup' }">Register</RouterLink>
   </div>
   <div v-else>
-    <span>Welcome, {{ store.user.username }}!</span>
+    <span>Welcome, {{ store.user?.username }}!</span>
   </div>
 </template>
